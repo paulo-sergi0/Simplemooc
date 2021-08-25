@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+ <!-- "simplemooc.courses.courses_tags" também é aceitável porém o dajando aceita somente o nome courses_tags pois está na pasta templatetags da app atual -->
+{% load courses_tags %}
+
+{% block content %}
+<!-- Template criado pela necessidade de exibir os cursos do usuários em todos os templates disponiveis e não somente em def dashboard(request) onde o primeiro método para adicionar os cursos ao contexto foi elaborado -->
+{% load_my_courses user as enrollments %}
+<div class="pure-g-r content-ribbon">
+    <div class="pure-u-1">
+        <ul class="breadcrumb">
+            {% block breadcrumb %}
+                <li><a href="{% url 'accounts:dashboard' %}">Meu Painel</a></li>
+            {% endblock %}
+        </ul>
+    </div>
+    <div class="pure-u-1-3"> 
+        <div class="pure-menu pure-menu-open">
+            <ul>
+                <li class="pure-menu-heading">
+                    Bem vindo, {{ user }}
+                </li>
+                <!-- bloco para adicionar submenus extras -->
+                {% block menu_options %}
+                    <li class="pure-menu-heading">Cursos</li>
+                    {% for enrollment in enrollments %}
+                        <li>
+                            <a href="{% url 'courses:announcements' enrollment.course.slug %}">
+                                <i class="fa fa-book"></i>                               
+                                {{ enrollment.course }}
+                            </a>
+                        </li>
+                    {% empty %}
+                        <li>Nenhum curso encontrado</li>
+                    {% endfor %}
+                    <li class="pure-menu-heading">Configurações de Conta</li>
+                    <li>
+                        <a href="{% url 'accounts:edit' %}">
+                            <i class="fa fa-cog"></i>            
+                            Editar Informações
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'accounts:edit_password' %}">
+                            <i class="fa fa-lock"></i>
+                            Editar Senha
+                        </a>
+                    </li>
+                {% endblock %}
+            </ul>
+        </div>
+    </div>
+    <div class="pure-u-2-3">
+        <div class="inner">
+            {% block dashboard_content %}
+                <h2>Meus Cursos</h2>
+                {% for enrollment in enrollments %}
+                    <div class="well">
+                        <h3>{{ enrollment.course }}
+                            ({{ enrollment.course.start_date|date:'d/m/Y'|default:'Sem data' }})
+                        </h3>
+                        {{ enrollment.course.description|linebreaks }}
+                        <div class="pure-controls">
+                            <a href="{% url 'courses:announcements' enrollment.course.slug %}" class="pure-button pure-button-primary">Acessar</a>
+                            <a href="{% url 'courses:undo_enrollment' enrollment.course.slug %}" class="pure-button button-error">Cancelar</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <aside class="pure-u-1">
+                        <p>Nenhum curso inscrito</p>
+                    </aside>
+                {% endfor %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+aplicação accounts(form.py)
+    class EditAccountForm(forms.ModelForm):
+    #ToDo: Pesquisar sobre exclude(pk=self.instance.pk) pois não está alterando em nada o comportamento com relação ao e-mail (fazer mais testes pra confirmar)
+
+aplicação accounts(views.py)
+    def edit_password(request):
+    #Todo: Implementar validação se a nova senha é igual a atual
+
+No cadastro de cursos se um slug for incluído em duplicidade é apresentado um erro durante a seleção do curso (erro de multiplos objetos retornados)
+
+Na exibição de mensagens ao usuário: Pesquisar como customizar a exibição da mensagem (para a mensagem sumir com o tempo/exibir um 'x' para ser excluída)
+
+No Django ADMIN não é mais exibido o cadastro de usuáirios, verificar o motivo (verificar classe ADMIN.py) --Resolvido: Model registrado na class admin.py
+
+Votar na aula 56 e analisar o motivo dos icones não serem exibidos (o código com relação o icones será removido) erro: Not Found: /favicon.ico
+
+Criar um model para ser herdado para evitar a repitição dos códigos abaixo
+    create_at = models.DateTimeField('Criado em', auto_now_add=True)
+    updated_at = models.DateTimeField('Atualizado em', auto_now=True)
+
+Testar a não obrigatóriedade de regex no url.py - Visto que não é mais obrigatório(internet)
